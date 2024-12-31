@@ -2,66 +2,67 @@ import mongoose from "mongoose";
 
 import Recipe from "../models/recipe.model.js";
 
-// export const getProducts = async (req, res) => {
-//     try {
-//         // if find() has empty obj {}, this will fetch 
-//         //all of the obj in DB
-//         const products = await Product.find({});
-//         res.status(200).json({ success: true, data: products })
-//     } catch (error) {
-//         console.log("error in fetching products:", error.message);
-//         res.status(500).json({ success: false, message: "Server Error" });
-//     }
-// };
+export const getRecipes = async (req, res) => {
+    try {
+        // if find() has empty obj {}, this will fetch 
+        //all of the obj in DB
+        const recipes = await Recipe.find({});
+        res.status(200).json({ success: true, data: recipes })
+    } catch (error) {
+        console.log("error in fetching recipes:", error.message);
+        res.status(500).json({ success: false, message: "Server Error" });
+    }
+};
 
-// export const createProduct = async (req, res) => {
-//     const product = req.body; // user will send this data
+export const createRecipe = async (req, res) => {
+    const recipe = req.body; // user will send this data
     
-//     // check if user input fields are valid
-//     if (!product.name || !product.price || !product.image) {
-//         return res.status(400).json({ success: false, message: "Please provide all fields" });
-//     }
+    // check if user input fields are valid
+    if (!recipe.name || !recipe.price || !recipe.image) {
+        return res.status(400).json({ success: false, message: "Please provide all fields" });
+    }
 
-//     const newProduct = new Product(product);
+    const newRecipe = new Recipe(recipe);
 
-//     try {
-//         await newProduct.save();
-//         res.status(201).json({ success: true, data: newProduct });
-//     } catch (error) {
-//         console.error("Error in Create product: ", error.message);
-//         res.status(500).json({ success: false, message: "Server Error" });
-//     }
-// };
+    try {
+        await newRecipe.save();
+        res.status(201).json({ success: true, data: newRecipe });
+    } catch (error) {
+        console.error("Error in creating new recipe: ", error.message);
+        res.status(500).json({ success: false, message: "Server Error" });
+    }
+};
 
-// export const updateProduct = async (req, res) => {
-//     const { id } = req.params;
+export const updateRecipe = async (req, res) => {
+    const { id } = req.params;
 
-//     const product = req.body;
+    const recipe = req.body;
 
-//     if (!mongoose.Types.ObjectId.isValid(id)) {
-//         return res.status(404).json({ success: false, message: "Invalid Product Id" });
-//     }
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ success: false, message: "Invalid Recipe Id" });
+    }
 
-//     try {
-//         const updatedProduct = await Product.findByIdAndUpdate(id, product, { new: true });
-//         res.status(200).json({ success: true, data: updatedProduct });
-//     } catch (error) {
-        
-//     }
-// };
+    try {
+        const updatedRecipe = await Recipe.findByIdAndUpdate(id, recipe, { new: true });
+        res.status(200).json({ success: true, data: updatedRecipe });
+    } catch (error) {
+        console.log("error in updating recipe:", error.message);
+        res.status(500).json({ success: false, message: "Server Error" })
+    }
+};
 
-// export const deleteProduct = async (req, res) => {
-//     const {id} = req.params;
+export const deleteRecipe = async (req, res) => {
+    const { id } = req.params;
 
-//     if (!mongoose.Types.ObjectId.isValid(id)) {
-//         return res.status(404).json({ success: false, message: "Invalid Product Id" });
-//     }
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ success: false, message: "Invalid Recipe Id" });
+    }
 
-//     try {
-//         await Product.findByIdAndDelete(id);
-//         res.status(200).json({ success: true, message: "Product deleted" });
-//     } catch (error) {
-//         console.log("error in deleting product:", error.message);
-//         res.status(500).json({ success: false, message: "Server Error" })
-//     }
-// };
+    try {
+        await Recipe.findByIdAndDelete(id);
+        res.status(200).json({ success: true, message: "Recipe deleted" });
+    } catch (error) {
+        console.log("error in deleting recipe:", error.message);
+        res.status(500).json({ success: false, message: "Server Error" })
+    }
+};
