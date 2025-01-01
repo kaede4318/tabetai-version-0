@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 import Recipe from "../models/recipe.model.js";
+import RecipeDetail from "../models/recipeDetail.model.js";
 
 export const getRecipes = async (req, res) => {
     try {

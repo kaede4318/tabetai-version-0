@@ -1,23 +1,37 @@
 import mongoose from 'mongoose';
 
+const tagSchema = new mongoose.Schema({
+    tag: {
+        type: String,
+        index: 1
+    }
+})
+
 const recipeSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        index: 1
     },
-    price: {
+    author: {
+        type: String,
+        required: false
+    },
+    rating: {
         type: Number,
-        required: true
+        required: false,
+        index: -1
     },
     image: {
         type: String,
-        required: true
+        required: false
     },
+    tags: [tagSchema],
+    detailId: mongoose.Schema.Types.ObjectId, // reference to RecipeDetail
 }, {
     timestamps: true // createdAt, updatedAt
 });
 
-const Recipe = mongoose.model('Recipe', recipeSchema);
-// use singular, capitalized version of noun
+const Recipe = mongoose.model('Recipe', recipeSchema); // use singular, capitalized version of noun
 
 export default Recipe;
