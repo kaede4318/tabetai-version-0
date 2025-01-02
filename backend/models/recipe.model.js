@@ -27,7 +27,9 @@ const recipeSchema = new mongoose.Schema({
         required: false
     },
     tags: [tagSchema],
-    detailId: mongoose.Schema.Types.ObjectId, // reference to RecipeDetail
+    detailId: {
+        type: mongoose.Schema.Types.ObjectId
+    }, // reference to RecipeDetail
 }, {
     timestamps: true // createdAt, updatedAt
 });
