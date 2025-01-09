@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { Types } from "mongoose";
 
 // define types for state and actions
-interface Recipe {
+export interface Recipe {
 	_id: string; // MongoDB ObjectId as a string
 	name: string;
 	author: string;
@@ -12,7 +12,7 @@ interface Recipe {
 	detailId: Types.ObjectId;
 }
 
-interface RecipeStore {
+export interface RecipeStore {
 	recipes: Recipe[];
 	setRecipes: (recipes: Recipe[]) => void;
 	createRecipe: (newRecipe: Omit<Recipe, "_id" | "detailId">) => Promise<{ success: boolean; message: string }>;
