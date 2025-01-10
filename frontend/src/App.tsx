@@ -8,6 +8,8 @@ import CreatePage from './pages/CreatePage';
 import RecipePage from './pages/RecipePage';
 import Navbar from "./components/Navbar";
 
+import '@mantine/core/styles.css';
+
 function App() {
 
   return (

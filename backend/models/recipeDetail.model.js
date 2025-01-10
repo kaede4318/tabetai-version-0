@@ -32,7 +32,7 @@ const recipeDetailSchema = new mongoose.Schema({
     }],
     instructions: [{
         instruction: { type: String, required: true },
-        pictureLink: { type: String, required: false }
+        pictureLink: { type: String, required: false } // recipes sometimes have multiple pictures per instruction
     }],
     notes: [{
         note: { type: String, required: false }
