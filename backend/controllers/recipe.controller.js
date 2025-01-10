@@ -29,8 +29,8 @@ export const getRecipe = async (req, res) => {
 
     try {
         const recipe = await Recipe.findById(id);
-        const recipeDetail = await RecipeDetail.find(recipe.detailId);
-        res.status(200).json({ success: true, recipeData: recipe, detailedRecipeData: recipeDetail })
+        const recipeDetail = await RecipeDetail.findOne(recipe.detailId);
+        res.status(200).json({ success: true, recipeData: { recipe, recipeDetail } })
     } catch (error) {
         console.log("error in fetching recipes:", error.message);
         res.status(500).json({ success: false, message: "Server Error" });
