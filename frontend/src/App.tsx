@@ -9,16 +9,21 @@ import RecipePage from './pages/RecipePage';
 import Navbar from "./components/Navbar";
 
 import '@mantine/core/styles.css';
+import AppShellLayout from './components/AppShellLayout';
 
 function App() {
 
   return (
-    <Container>
-      <Navbar />
+    <Container
+      size="80%"
+    >
+      {/* <Navbar /> */}
       <Routes>
-        <Route path='/' element={<HomePage />} />
-        <Route path='/create' element={<CreatePage />} />
-        <Route path='/recipe/:id' element={<RecipePage />} /> {/* This is a Dynamic Route */}
+        <Route element={<AppShellLayout />}>
+          <Route path='/' element={<HomePage />} />
+          <Route path='/create' element={<CreatePage />} />
+          <Route path='/recipe/:id' element={<RecipePage />} /> {/* This is a Dynamic Route */}
+        </Route>
       </Routes>
     </Container>
   );
