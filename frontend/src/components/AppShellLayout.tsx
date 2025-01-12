@@ -18,12 +18,12 @@ function AppShellLayout() {
         >
             <AppShell.Header>
                 <Burger
-                opened={opened}
-                onClick={toggle}
-                hiddenFrom="sm"
-                size="sm"
+                    opened={opened}
+                    onClick={toggle}
+                    hiddenFrom="sm"
+                    size="sm"
                 />
-                <div>Logo</div>
+                <div>Header</div>
             </AppShell.Header>
 
             <AppShell.Navbar 
