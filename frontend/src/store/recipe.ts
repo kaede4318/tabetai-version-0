@@ -2,6 +2,11 @@ import { create } from "zustand";
 import { Types } from "mongoose";
 
 // define types for state and actions
+interface ApiResponse {
+    success: boolean;
+    message: string;
+}
+
 export interface Recipe {
 	_id: string; // MongoDB ObjectId as a string
 	name: string;
@@ -15,11 +20,11 @@ export interface Recipe {
 export interface RecipeStore {
 	recipes: Recipe[];
 	setRecipes: (recipes: Recipe[]) => void;
-	createRecipe: (newRecipe: Omit<Recipe, "_id" | "detailId">) => Promise<{ success: boolean; message: string }>;
-	fetchRecipes: () => Promise<void>;
-	fetchRecipe: (rid: string) => Promise<Recipe | null>;
-	deleteRecipe: (rid: string) => Promise<{ success: boolean; message: string }>;
-	updateRecipe: (rid: string, updatedRecipe: Partial<Recipe>) => Promise<{ success: boolean; message: string }>;
+	createRecipe: (newRecipe: Omit<Recipe, "_id" | "detailId">) => Promise<ApiResponse>;
+	fetchRecipes: () => Promise<ApiResponse>;
+	fetchRecipe: (rid: string) => Promise<Recipe | ApiResponse>;
+	deleteRecipe: (rid: string) => Promise<ApiResponse>;
+	updateRecipe: (rid: string, updatedRecipe: Partial<Recipe>) => Promise<ApiResponse>;
 }
 
 export const useRecipeStore = create<RecipeStore>((set) => ({
@@ -27,7 +32,7 @@ export const useRecipeStore = create<RecipeStore>((set) => ({
 
 	setRecipes: (recipes) => set({ recipes }),
 
-	createRecipe: async (newRecipe) => {
+	createRecipe: async (newRecipe): Promise<ApiResponse> => {
 		try {
 			const res = await fetch("/api/recipes", {
 				method: "POST",
@@ -50,7 +55,7 @@ export const useRecipeStore = create<RecipeStore>((set) => ({
 		}
 	},
 
-	fetchRecipes: async () => {
+	fetchRecipes: async (): Promise<ApiResponse> => {
 		try {
 			const res = await fetch("/api/recipes");
 			const data = await res.json();
@@ -60,12 +65,15 @@ export const useRecipeStore = create<RecipeStore>((set) => ({
 			}
 	  
 			set({ recipes: data.data });
+
+            return { success: true, message: "Recipe fetched successfully" };
 		} catch (error) {
 			console.error("Error fetching recipes:", (error as Error).message);
+            return { success: false, message: (error as Error).message };
 		}
 	},
 
-	fetchRecipe: async (rid) => {
+	fetchRecipe: async (rid): Promise<any | ApiResponse> => {
 		try {
 			const res = await fetch(`/api/recipes/${rid}`);
 			const data = await res.json();
@@ -77,11 +85,11 @@ export const useRecipeStore = create<RecipeStore>((set) => ({
 			return data.recipeData; // return single recipe by id
 		} catch (error) {
 			console.error("Error fetching recipe:", (error as Error).message);
-			return null;
+			return { success: false, message: (error as Error).message };
 		}
 	},
 
-	deleteRecipe: async (rid) => {
+	deleteRecipe: async (rid): Promise<ApiResponse> => {
 	    try {
 			const res = await fetch(`/api/recipes/${rid}`, {
 				method: "DELETE",
@@ -103,7 +111,7 @@ export const useRecipeStore = create<RecipeStore>((set) => ({
 		}
 	},
 
-	updateRecipe: async (rid, updatedRecipe) => {
+	updateRecipe: async (rid, updatedRecipe): Promise<ApiResponse> => {
 		try {
 			const res = await fetch(`/api/recipes/${rid}`, {
 				method: "PUT",
