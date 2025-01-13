@@ -1,7 +1,7 @@
-// import { AppShell, Navbar, Header, Text, Container } from '@mantine/core';
-import { AppShell, Burger } from '@mantine/core';
+import { Anchor, AppShell, Burger } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Outlet } from 'react-router-dom';
+import Navbar from './Navbar';
 
 function AppShellLayout() {
     const [opened, { toggle }] = useDisclosure();
@@ -23,13 +23,18 @@ function AppShellLayout() {
                     hiddenFrom="sm"
                     size="sm"
                 />
-                <div>Header</div>
+                {/* <div>Header</div> */}
+                <Anchor
+                    href={"/"}
+                >
+                    GO HOME 🏠
+                </Anchor>
             </AppShell.Header>
 
             <AppShell.Navbar 
                 p="sm"
             >
-                Navbar
+                <Navbar />
             </AppShell.Navbar>
 
             <AppShell.Main
