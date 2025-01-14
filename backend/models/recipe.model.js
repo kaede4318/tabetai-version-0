@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 const tagSchema = new mongoose.Schema({
     tag: {
         type: String,
+        required: false,
         index: 1
     }
 })

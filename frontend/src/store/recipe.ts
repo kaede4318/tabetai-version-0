@@ -21,7 +21,7 @@ export interface RecipeStore {
 	recipes: Recipe[];
 	setRecipes: (recipes: Recipe[]) => void;
 	// createRecipe: (newRecipe: Omit<Recipe, "_id" | "detailId">) => Promise<ApiResponse>; // do we need Omit type?
-	createRecipe: (newRecipe: Recipe) => Promise<ApiResponse>;
+	createRecipe: (newRecipe: any) => Promise<ApiResponse>;
 	fetchRecipes: () => Promise<ApiResponse>;
 	fetchRecipe: (rid: string) => Promise<Recipe | ApiResponse>;
 	deleteRecipe: (rid: string) => Promise<ApiResponse>;
@@ -35,6 +35,7 @@ export const useRecipeStore = create<RecipeStore>((set) => ({
 
 	createRecipe: async (newRecipe): Promise<ApiResponse> => {
 		try {
+            // console.log(newRecipe)
 			const res = await fetch("/api/recipes", {
 				method: "POST",
 				headers: {

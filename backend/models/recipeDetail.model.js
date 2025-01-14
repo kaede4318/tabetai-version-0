@@ -1,22 +1,6 @@
 import mongoose from "mongoose";
 
 // TODO: Convert this file to TS
-// TODO: remove this! make ingredient a string with all of the info in it
-const ingredientSchema = new mongoose.Schema({
-    ingredient: {
-        type: { 
-            name: {
-                type: String,
-                required: true
-            },
-            amount: {
-                qty: { type: Number, required: false },
-                unit: { type: String, required: false }
-            }
-        },
-        required: true
-    }
-});
 
 const recipeDetailSchema = new mongoose.Schema({
     servings: {
@@ -28,9 +12,11 @@ const recipeDetailSchema = new mongoose.Schema({
         prep: { type: Number, required: false },
         cook: { type: Number, required: false }
     },
-    ingredients: [ingredientSchema],
+    ingredients: [{ 
+        ingredient: { type: String, required: true }
+    }],
     equipment: [{ 
-        name: { type: String }
+        name: { type: String, required: false }
     }],
     instructions: [{
         instruction: { type: String, required: true },
