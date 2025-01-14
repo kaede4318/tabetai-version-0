@@ -1,69 +1,258 @@
-import { useState } from "react"
+import { useState } from "react";
 import { useRecipeStore } from "../store/recipe";
-// TODO: Uncomment the two imports below when the files have been converted to .ts
-// import { Recipe } from "../../../backend/models/recipe.model.js";
-// import { RecipeDetail } from "../../../backend/models/recipeDetail.model.js";
-import { InferSchemaType } from "mongoose";
-import { Anchor, Box, Button, Fieldset, FileInput, Group, MultiSelect, NumberInput, Stack, TextInput, Title } from "@mantine/core";
+import {
+  Anchor,
+  Box,
+  Button,
+  Fieldset,
+  FileInput,
+  Group,
+  MultiSelect,
+  NumberInput,
+  Stack,
+  TextInput,
+  Title,
+} from "@mantine/core";
 
 const emptyRecipe = {
-    name: "",
-    author: "",
-    rating: null,
-    image: "",
-    tags: [],
-    detailId: null 
+  name: "",
+  author: "",
+  rating: null,
+  image: "",
+  tags: [],
+  detailId: null,
 };
 
 const emptyRecipeDetail = {
-    servings: null,
-    cookingTime: {},
-    ingredients: [],
-    equipment: [],
-    instructions: [],
-    notes: [],
-    link: ""
+  servings: null,
+  cookingTime: { total: null, prep: null, cook: null },
+  ingredients: [],
+  equipment: [],
+  instructions: [],
+  notes: [],
+  link: "",
 };
 
-// TODO: Convert backend to Typescript as well.
-// type RecipeDoc = InferSchemaType<typeof Recipe.schema>;
-
 const CreatePage: React.FC = () => {
-    let [newRecipe, setNewRecipe] = useState<any>(emptyRecipe); // change type from any?
+  const [newRecipe, setNewRecipe] = useState<any>(emptyRecipe);
+  const [newRecipeDetail, setNewRecipeDetail] = useState<any>(emptyRecipeDetail);
 
-    const { createRecipe } = useRecipeStore();
+  const { createRecipe } = useRecipeStore();
 
-    const handleAddRecipe = async () => {
-        let { success, message } = await createRecipe(newRecipe);
-
-        // IGNORE FOR NOW: add status toast here
-
-        setNewRecipe(emptyRecipe);
+  const handleAddRecipe = async () => {
+    const newRecipeData = {
+      recipeData: newRecipe,
+      detailedRecipeData: newRecipeDetail,
     };
-    
-    return (
-        <Box>
-            <Fieldset legend="Basic Info">
-                <TextInput label="Recipe Name" placeholder="My Recipe" /> 
-                <TextInput label="Recipe Author" placeholder="Me" mt="md" />
-                {/* number of servings input component */}
-                {/* Cook time input, need: total, prep, cook component */}
-                {/* tags input component */}
-                {/* recipe picture input component, accept photo file types only */}
-            </Fieldset>
 
-            <Fieldset legend="Details">
-                {/* Recipe ingredient list:text input for ingredients, which is a string. IMPORTANT: use one TextInput component per ingredient, and allow user to create a new TextInput for each new ingredient. Collect all ingredients into a list. */}
-                {/* Recipe method: Do the same as above but for recipe steps. Also include an optional section to add one or more images per step. */}
-                {/* Note section: Lastly, do the same as the previous two but for any additional notes. */}
-            </Fieldset>
-        <Button
-            onClick={handleAddRecipe}
-        >
-            Submit new recipe!
-        </Button>
-        </Box>
-    );
-}
+    const { success, message } = await createRecipe(newRecipeData);
+    console.log(success)
+    console.log(message)
+    // IGNORE FOR NOW: Add status toast here
+    if (success) {
+      setNewRecipe(emptyRecipe);
+      setNewRecipeDetail(emptyRecipeDetail);
+    } else {
+      console.error(message);
+    }
+  };
 
-export default CreatePage
+  const handleIngredientChange = (index: number, value: string) => {
+    const updatedIngredients = [...newRecipeDetail.ingredients];
+    updatedIngredients[index] = { ingredient: value };
+    setNewRecipeDetail({ ...newRecipeDetail, ingredients: updatedIngredients });
+  };
+
+  const addNewIngredient = () => {
+    setNewRecipeDetail({
+      ...newRecipeDetail,
+      ingredients: [...newRecipeDetail.ingredients, { ingredient: "" }],
+    });
+  };
+
+  const handleInstructionChange = (index: number, value: string) => {
+    const updatedInstructions = [...newRecipeDetail.instructions];
+    updatedInstructions[index] = { instruction: value };
+    setNewRecipeDetail({ ...newRecipeDetail, instructions: updatedInstructions });
+  };
+
+  const addNewInstruction = () => {
+    setNewRecipeDetail({
+      ...newRecipeDetail,
+      instructions: [...newRecipeDetail.instructions, { instruction: "" }],
+    });
+  };
+
+  const handleNoteChange = (index: number, value: string) => {
+    const updatedNotes = [...newRecipeDetail.notes];
+    updatedNotes[index] = { note: value };
+    setNewRecipeDetail({ ...newRecipeDetail, notes: updatedNotes });
+  };
+
+  const addNewNote = () => {
+    setNewRecipeDetail({
+      ...newRecipeDetail,
+      notes: [...newRecipeDetail.notes, { note: "" }],
+    });
+  };
+
+  return (
+    <Box>
+      <Fieldset legend="Basic Info">
+        <TextInput
+          label="Recipe Name"
+          placeholder="My Recipe"
+          value={newRecipe.name}
+          onChange={(e) =>
+            setNewRecipe({ ...newRecipe, name: e.currentTarget.value })
+          }
+        />
+        <TextInput
+          label="Recipe Author"
+          placeholder="Me"
+          mt="md"
+          value={newRecipe.author}
+          onChange={(e) =>
+            setNewRecipe({ ...newRecipe, author: e.currentTarget.value })
+          }
+        />
+        <NumberInput
+          label="Rating"
+          placeholder="5"
+          mt="md"
+          value={newRecipe.rating}
+          onChange={(value) =>
+            setNewRecipe({ ...newRecipe, rating: value })
+          }
+          min={0}
+          max={5}
+        />
+        <MultiSelect
+          label="Tags"
+          placeholder="Add tags"
+          mt="md"
+          data={["Mexican", "Easy", "Chicken"]}
+          value={newRecipe.tags.map((tag: any) => tag.tag)}
+          onChange={(value) =>
+            setNewRecipe({ ...newRecipe, tags: value.map((tag) => ({ tag })) })
+          }
+          searchable
+        //   creatable
+        //   getCreateLabel={(query) => `+ Create "${query}"`}
+        //   onCreate={(query) => query}
+        />
+        <FileInput
+          label="Recipe Picture"
+          placeholder="Upload an image"
+          mt="md"
+          accept="image/*"
+          onChange={(file) => setNewRecipe({ ...newRecipe, image: file })}
+        />
+      </Fieldset>
+
+      <Fieldset legend="Details">
+        <NumberInput
+          label="Servings"
+          placeholder="2"
+          mt="md"
+          value={newRecipeDetail.servings}
+          onChange={(value) =>
+            setNewRecipeDetail({ ...newRecipeDetail, servings: value })
+          }
+        />
+        <Group mt="md" grow>
+          <NumberInput
+            label="Total Time (minutes)"
+            placeholder="15"
+            value={newRecipeDetail.cookingTime.total}
+            onChange={(value) =>
+              setNewRecipeDetail({
+                ...newRecipeDetail,
+                cookingTime: { ...newRecipeDetail.cookingTime, total: value },
+              })
+            }
+          />
+          <NumberInput
+            label="Prep Time (minutes)"
+            placeholder="5"
+            value={newRecipeDetail.cookingTime.prep}
+            onChange={(value) =>
+              setNewRecipeDetail({
+                ...newRecipeDetail,
+                cookingTime: { ...newRecipeDetail.cookingTime, prep: value },
+              })
+            }
+          />
+          <NumberInput
+            label="Cook Time (minutes)"
+            placeholder="10"
+            value={newRecipeDetail.cookingTime.cook}
+            onChange={(value) =>
+              setNewRecipeDetail({
+                ...newRecipeDetail,
+                cookingTime: { ...newRecipeDetail.cookingTime, cook: value },
+              })
+            }
+          />
+        </Group>
+
+        <Stack mt="md">
+          <Title order={5}>Ingredients</Title>
+          {newRecipeDetail.ingredients.map((ingredient: any, index: number) => (
+            <TextInput
+              key={index}
+              placeholder="Ingredient"
+              value={ingredient.ingredient.name}
+              onChange={(e) =>
+                handleIngredientChange(index, e.currentTarget.value)
+              }
+            />
+          ))}
+          <Button variant="light" onClick={addNewIngredient}>
+            + Add Ingredient
+          </Button>
+        </Stack>
+
+        <Stack mt="md">
+          <Title order={5}>Instructions</Title>
+          {newRecipeDetail.instructions.map((instruction: any, index: number) => (
+            <TextInput
+              key={index}
+              placeholder="Instruction"
+              value={instruction.instruction}
+              onChange={(e) =>
+                handleInstructionChange(index, e.currentTarget.value)
+              }
+            />
+          ))}
+          <Button variant="light" onClick={addNewInstruction}>
+            + Add Instruction
+          </Button>
+        </Stack>
+
+        <Stack mt="md">
+          <Title order={5}>Notes</Title>
+          {newRecipeDetail.notes.map((note: any, index: number) => (
+            <TextInput
+              key={index}
+              placeholder="Note"
+              value={note.note}
+              onChange={(e) =>
+                handleNoteChange(index, e.currentTarget.value)
+              }
+            />
+          ))}
+          <Button variant="light" onClick={addNewNote}>
+            + Add Note
+          </Button>
+        </Stack>
+      </Fieldset>
+
+      <Button mt="md" onClick={handleAddRecipe}>
+        Submit new recipe!
+      </Button>
+    </Box>
+  );
+};
+
+export default CreatePage;
