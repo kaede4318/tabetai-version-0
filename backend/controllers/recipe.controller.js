@@ -47,11 +47,11 @@ export const createRecipe = async (req, res) => {
 
     // check if user input fields are valid
     if (!recipeData || !recipeData.name) {
-        return res.status(400).json({ success: false, message: "Please provide all fields to recipe" });
+        return res.status(400).json({ success: false, message: "Missing field(s): please provide all fields to recipe" });
     }
 
     if (!detailedRecipeData || detailedRecipeData.ingredients.length === 0 || detailedRecipeData.instructions.length === 0) {
-        return res.status(400).json({ success: false, message: "Please provide ingredients and/or instructions to recipe"});
+        return res.status(400).json({ success: false, message: "Missing field(s): please provide ingredients and/or instructions to recipe"});
     }
 
     try {
@@ -64,11 +64,12 @@ export const createRecipe = async (req, res) => {
             detailId: savedRecipeDetail._id, // Reference to RecipeDetail
         });
         const savedRecipe = await recipe.save();
-
-        res.status(201).json({
-            message: 'Recipe and RecipeDetail created successfully',
-            recipe: savedRecipe,
-            recipeDetail: savedRecipeDetail,
+        res.status(201).json({ 
+            success: true, 
+            data: {
+                data: savedRecipe, 
+                dataDetailed: savedRecipeDetail 
+            }
         });
     } catch (error) {
         console.error("Error in creating new recipe: ", error.message);
