@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+// TODO: remove this! make ingredient a string with all of the info in it
 const ingredientSchema = new mongoose.Schema({
     ingredient: {
         type: { 

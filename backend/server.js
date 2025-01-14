@@ -4,6 +4,8 @@ import { connectDB } from "./config/db.js";
 
 import recipeRoutes from "./routes/recipe.route.js"
 
+// TODO: Convert this file to TS
+
 dotenv.config();
 
 const app = express();

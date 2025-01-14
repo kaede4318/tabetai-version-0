@@ -1,6 +1,8 @@
 import express from "express";
 import { createRecipe, getRecipes, updateRecipe, deleteRecipe, getRecipe } from '../controllers/recipe.controller.js';
 
+// TODO: Convert this file to TS
+
 const router = express.Router();
 
 router.get("/", getRecipes);

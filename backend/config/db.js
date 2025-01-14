@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+// TODO: Convert this file to TS
+
 export const connectDB = async () => {
     try {
         const conn = await mongoose.connect(process.env.MONGO_URI);

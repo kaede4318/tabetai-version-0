@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+// TODO: Convert this file to TS
+
 const tagSchema = new mongoose.Schema({
     tag: {
         type: String,
