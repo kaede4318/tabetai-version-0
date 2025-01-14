@@ -1,4 +1,4 @@
-import { Anchor, Container, SimpleGrid } from "@mantine/core";
+import { Anchor, Box, Container, SimpleGrid, Stack, Title } from "@mantine/core";
 import RecipeCard from "../components/RecipeCard";
 import { useRecipeStore } from "../store/recipe";
 import { useEffect, useState } from "react";
@@ -37,25 +37,33 @@ const HomePage = () => {
     }
     
     return (
-        <Container>
-            <h1>Recipes</h1>
-            <SimpleGrid 
-                cols={{ base: 1, sm: 2, lg: 3 }}
-                spacing={{ base: 10, sm: 'xl' }}
-                verticalSpacing={{ base: 'md', sm: 'xl' }}
+        <Box>
+            <Stack
+                h="100%"
+                bg="var(--mantine-color-body)"
+                align="stretch"
+                justify="space-between"
             >
-                {recipes.map((r) => (
-                    <div key={r._id}>
-                        <Anchor
-                            href={`/recipe/${r._id}`}
-                            underline="never"
-                        >
-                            <RecipeCard recipe={r} />
-                        </Anchor>
-                    </div>
-                ))}
-            </SimpleGrid>
-        </Container>
+                <Title>Recipes</Title>
+                
+                <SimpleGrid 
+                    cols={{ base: 1, sm: 2, lg: 3 }}
+                    spacing={{ base: 10, sm: 'xl' }}
+                    verticalSpacing={{ base: 'md', sm: 'xl' }}
+                >
+                    {recipes.map((r) => (
+                        <div key={r._id}>
+                            <Anchor
+                                href={`/recipe/${r._id}`}
+                                underline="never"
+                            >
+                                <RecipeCard recipe={r} />
+                            </Anchor>
+                        </div>
+                    ))}
+                </SimpleGrid>
+            </Stack>
+        </Box>
     );
 }
 

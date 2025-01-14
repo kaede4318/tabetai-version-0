@@ -20,7 +20,8 @@ export interface Recipe {
 export interface RecipeStore {
 	recipes: Recipe[];
 	setRecipes: (recipes: Recipe[]) => void;
-	createRecipe: (newRecipe: Omit<Recipe, "_id" | "detailId">) => Promise<ApiResponse>;
+	// createRecipe: (newRecipe: Omit<Recipe, "_id" | "detailId">) => Promise<ApiResponse>; // do we need Omit type?
+	createRecipe: (newRecipe: Recipe) => Promise<ApiResponse>;
 	fetchRecipes: () => Promise<ApiResponse>;
 	fetchRecipe: (rid: string) => Promise<Recipe | ApiResponse>;
 	deleteRecipe: (rid: string) => Promise<ApiResponse>;

@@ -9,6 +9,7 @@ const RecipeCard = ({ recipe }: {recipe: Recipe}) => {
             <Card.Section>
                 <Image
                     src={recipe.image}
+                    fallbackSrc={"https://placehold.co/600x400?text=Image+not+found+:("}
                     height={200}
                     alt="Food"
                 />

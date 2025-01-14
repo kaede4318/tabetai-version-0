@@ -1,7 +1,7 @@
 // import { Button, Container, Flex, HStack, Text, useColorMode } from "@chakra-ui/react";
 // import { Link } from "react-router-dom";
 
-import { Button, Container, Text, NavLink, Stack, Anchor } from "@mantine/core";
+import { Button, Text, NavLink, Stack, Anchor } from "@mantine/core";
 import { FiPlus } from "react-icons/fi";
 
 // import { PlusSquareIcon } from "@chakra-ui/icons";
