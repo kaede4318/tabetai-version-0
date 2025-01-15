@@ -1,6 +1,6 @@
 import { Anchor, Box, Container, SimpleGrid, Stack, Title } from "@mantine/core";
 import RecipeCard from "../components/RecipeCard";
-import { useRecipeStore } from "../store/recipe";
+import { useRecipeStore } from "../store/apiStore";
 import { useEffect, useState } from "react";
 
 const HomePage = () => {

@@ -1,5 +1,5 @@
 // import React from 'react'
-import type { Recipe } from "../store/recipe";
+import type { Recipe } from "../store/apiStore";
 
 import { Card, Image, Text, Badge, Group } from '@mantine/core';
 

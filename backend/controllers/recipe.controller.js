@@ -41,6 +41,8 @@ export const getRecipe = async (req, res) => {
 
 /**
  * createRecipe creates a new recipe
+ * Important note: to call this method, the request body must be in the format:
+ * { recipeData: dataObject, detailedRecipeData: detailedDataObject }
  */
 export const createRecipe = async (req, res) => {
     const { recipeData, detailedRecipeData } = req.body; // user will send this data

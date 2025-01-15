@@ -1,16 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 
-import { useRecipeStore } from "../store/recipe";
+import { useRecipeStore } from "../store/apiStore";
 // import type { Recipe, RecipeStore } from "../store/recipe"; // how tf do you combine types
 
-import { Container, Image, Badge, Group, Space, Checkbox, Stack, List, Anchor, Title, Box } from "@mantine/core";
+import { Image, Badge, Group, Space, Checkbox, Stack, List, Anchor, Title, Box } from "@mantine/core";
 import { FiExternalLink } from 'react-icons/fi';
 
 // TODO: Remove this. It's unnecessarily complicated
 // forms the ingredient string for ingredients section
 const getIngredientString = (ingredient: any): string => {
-    console.log(ingredient)
     if (!ingredient.ingredient.amount || !ingredient.ingredient.amount.qty) {
         return `${ingredient.ingredient.name}`;
     } else if (!ingredient.ingredient.amount.unit) {
