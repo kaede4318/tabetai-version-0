@@ -28,6 +28,7 @@ export interface RecipeStore {
 	updateRecipe: (rid: string, updatedRecipe: Partial<Recipe>) => Promise<ApiResponse>;
 }
 
+// TODO: change the following method name and corresponding references.
 export const useRecipeStore = create<RecipeStore>((set) => ({
 	recipes: [],
 
@@ -35,7 +36,6 @@ export const useRecipeStore = create<RecipeStore>((set) => ({
 
 	createRecipe: async (newRecipe): Promise<ApiResponse> => {
 		try {
-            // console.log(newRecipe)
 			const res = await fetch("/api/recipes", {
 				method: "POST",
 				headers: {
