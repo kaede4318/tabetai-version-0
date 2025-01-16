@@ -41,6 +41,57 @@ const CreatePage: React.FC = () => {
 
     const { createRecipe } = useRecipeStore();
 
+    const recipeTags: String[] = [
+        "Breakfast",
+        "Lunch",
+        "Dinner",
+        "Snack",
+        "Dessert",
+        "Appetizer",
+        "Main Course",
+        "Side Dish",
+        "Easy",
+        "Quick",
+        "Healthy",
+        "Vegetarian",
+        "Vegan",
+        "Gluten-Free",
+        "Dairy-Free",
+        "Low-Carb",
+        "High-Protein",
+        "Mexican",
+        "Italian",
+        "Japanese",
+        "Chinese",
+        "Indian",
+        "Mediterranean",
+        "Thai",
+        "American",
+        "French",
+        "Korean",
+        "BBQ",
+        "Comfort Food",
+        "Holiday",
+        "Seasonal",
+        "One-Pot",
+        "Slow Cooker",
+        "Instant Pot",
+        "Grilled",
+        "Baked",
+        "Fried",
+        "Soup",
+        "Salad",
+        "Pasta",
+        "Seafood",
+        "Chicken",
+        "Beef",
+        "Pork",
+        "Vegetable",
+        "Spicy",
+        "Sweet",
+        "Savory"
+      ];
+
     const handleAddRecipe = async () => {
         const newRecipeData = {
         recipeData: newRecipe,
@@ -55,6 +106,7 @@ const CreatePage: React.FC = () => {
                 title: "Recipe Created",
                 message: message || "Your recipe was successfully created!",
                 color: "green",
+                position: 'bottom-center'
                 // icon: <Check size={16} />,
             });
             setNewRecipe(emptyRecipe);
@@ -64,6 +116,7 @@ const CreatePage: React.FC = () => {
                 title: "Error",
                 message: message || "There was an error creating your recipe.",
                 color: "red",
+                position: 'bottom-center'
                 // icon: <X size={16} />,
             });
             console.error(message);
@@ -112,7 +165,7 @@ const CreatePage: React.FC = () => {
 
     return (
         <Box>
-        <Fieldset legend="Basic Info">
+        <Fieldset legend="Overview">
             <TextInput
                 label="Recipe Name"
                 placeholder="My Recipe"
@@ -121,7 +174,7 @@ const CreatePage: React.FC = () => {
                     setNewRecipe({ ...newRecipe, name: e.currentTarget.value })
                 }
             />
-            {/* <TextInput
+            <TextInput
                 label="Recipe Author"
                 placeholder="Me"
                 mt="md"
@@ -145,24 +198,31 @@ const CreatePage: React.FC = () => {
                 label="Tags"
                 placeholder="Add tags"
                 mt="md"
-                data={["Mexican", "Easy", "Chicken"]}
+                data={recipeTags}
                 value={newRecipe.tags.map((tag: any) => tag.tag)}
                 onChange={(value) =>
                     setNewRecipe({ ...newRecipe, tags: value.map((tag) => ({ tag })) })
                 }
                 searchable
             />
-            <FileInput
+            {/* TODO: Maybe allow upload local file as well in the future. */}
+            {/* <FileInput
                 label="Recipe Picture"
                 placeholder="Upload an image"
                 mt="md"
                 accept="image/*"
                 onChange={(file) => setNewRecipe({ ...newRecipe, image: file })}
             /> */}
-        </Fieldset>
-
-        <Fieldset legend="Details">
-            {/* <NumberInput
+            <TextInput
+                label="Recipe Picture"
+                placeholder="Please provide a link"
+                mt="md"
+                value={newRecipe.image}
+                onChange={(e) =>
+                    setNewRecipe({ ...newRecipe, image: e.currentTarget.value })
+                }
+            />
+            <NumberInput
                 label="Servings"
                 placeholder="2"
                 mt="md"
@@ -172,91 +232,43 @@ const CreatePage: React.FC = () => {
                 }
             />
             <Group mt="md" grow>
-            <NumberInput
-                label="Total Time (minutes)"
-                placeholder="15"
-                value={newRecipeDetail.cookingTime.total}
-                onChange={(value) =>
-                    setNewRecipeDetail({
-                        ...newRecipeDetail,
-                        cookingTime: { ...newRecipeDetail.cookingTime, total: value },
-                    })
-                }
-            />
-            <NumberInput
-                label="Prep Time (minutes)"
-                placeholder="5"
-                value={newRecipeDetail.cookingTime.prep}
-                onChange={(value) =>
-                    setNewRecipeDetail({
-                        ...newRecipeDetail,
-                        cookingTime: { ...newRecipeDetail.cookingTime, prep: value },
-                    })
-                }
-            />
-            <NumberInput
-                label="Cook Time (minutes)"
-                placeholder="10"
-                value={newRecipeDetail.cookingTime.cook}
-                onChange={(value) =>
-                    setNewRecipeDetail({
-                        ...newRecipeDetail,
-                        cookingTime: { ...newRecipeDetail.cookingTime, cook: value },
-                    })
-                }
-            />
-            </Group> */}
+                <NumberInput
+                    label="Total Time (minutes)"
+                    placeholder="15"
+                    value={newRecipeDetail.cookingTime.total}
+                    onChange={(value) =>
+                        setNewRecipeDetail({
+                            ...newRecipeDetail,
+                            cookingTime: { ...newRecipeDetail.cookingTime, total: value },
+                        })
+                    }
+                />
+                <NumberInput
+                    label="Prep Time (minutes)"
+                    placeholder="5"
+                    value={newRecipeDetail.cookingTime.prep}
+                    onChange={(value) =>
+                        setNewRecipeDetail({
+                            ...newRecipeDetail,
+                            cookingTime: { ...newRecipeDetail.cookingTime, prep: value },
+                        })
+                    }
+                />
+                <NumberInput
+                    label="Cook Time (minutes)"
+                    placeholder="10"
+                    value={newRecipeDetail.cookingTime.cook}
+                    onChange={(value) =>
+                        setNewRecipeDetail({
+                            ...newRecipeDetail,
+                            cookingTime: { ...newRecipeDetail.cookingTime, cook: value },
+                        })
+                    }
+                />
+            </Group>
+        </Fieldset>
 
-            {/* <Stack mt="md">
-                <Title order={5}>Ingredients</Title>
-                {newRecipeDetail.ingredients.map((ingredient: any, index: number) => (
-                    <TextInput
-                        key={index}
-                        placeholder="Ingredient"
-                        value={ingredient.ingredient.name}
-                        onChange={(e) =>
-                            handleIngredientChange(index, e.currentTarget.value)
-                        }
-                    />
-                ))}
-                <Button variant="light" onClick={addNewIngredient}>
-                    + Add Ingredient
-                </Button>
-            </Stack>
-
-            <Stack mt="md">
-                <Title order={5}>Instructions</Title>
-                {newRecipeDetail.instructions.map((instruction: any, index: number) => (
-                    <TextInput
-                        key={index}
-                        placeholder="Instruction"
-                        value={instruction.instruction}
-                        onChange={(e) =>
-                            handleInstructionChange(index, e.currentTarget.value)
-                        }
-                    />
-                ))}
-                <Button variant="light" onClick={addNewInstruction}>
-                    + Add Instruction
-                </Button>
-            </Stack>
-
-            <Stack mt="md">
-                <Title order={5}>Notes</Title>
-                {newRecipeDetail.notes.map((note: any, index: number) => (
-                    <TextInput
-                        key={index}
-                        placeholder="Note"
-                        value={note.note}
-                        onChange={(e) =>
-                            handleNoteChange(index, e.currentTarget.value)
-                        }
-                    />
-                ))}
-                <Button variant="light" onClick={addNewNote}>
-                    + Add Note
-                </Button>
-            </Stack> */}
+        <Fieldset legend="Details">
             <ListInput
                 title="Ingredients"
                 items={newRecipeDetail.ingredients}
@@ -270,6 +282,20 @@ const CreatePage: React.FC = () => {
                 onChange={(index, value) => updateList("instructions", "instruction", index, value)}
                 onAdd={() => addToList("instructions", "instruction")}
                 onDelete={(index) => removeFromList("instructions", "instruction", index)}
+            />
+            <ListInput
+                title="Equipment"
+                items={newRecipeDetail.equipment}
+                onChange={(index, value) => updateList("equipment", "name", index, value)}
+                onAdd={() => addToList("equipment", "name")}
+                onDelete={(index) => removeFromList("equipment", "name", index)}
+            />
+            <ListInput
+                title="Notes"
+                items={newRecipeDetail.notes}
+                onChange={(index, value) => updateList("notes", "note", index, value)}
+                onAdd={() => addToList("notes", "note")}
+                onDelete={(index) => removeFromList("notes", "note", index)}
             />
         </Fieldset>
 
