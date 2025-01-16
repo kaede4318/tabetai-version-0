@@ -1,5 +1,5 @@
 import React from "react";
-import { Stack, TextInput, Button, Group } from "@mantine/core";
+import { Stack, TextInput, Button, Group, Title } from "@mantine/core";
 
 interface ListInputProps {
     title: string;
@@ -9,14 +9,18 @@ interface ListInputProps {
     onDelete: (index: number) => void;
 }
 
-// TODO: add function where users can rearrange the elements in the list
+// TODO: add functionality where users can rearrange the elements in the list if they want to change the 
+// order in which items appear
 
 const ListInput: React.FC<ListInputProps> = ({ title, items, onChange, onAdd, onDelete }) => {
     return (
-        <Stack mt="md">
-            <h5>{title}</h5>
+        <Stack mb="md">
+            <Title order={5}>{title}</Title>
+
             {items.map((item, index) => (
                 <Group key={index} align="center">
+                    {/* TODO: bug -- each field shows "Equipmen" instead of "Equipment" since the string
+                    is cut off at the end to remove the 's' for the other fields, like ingredient(s) */}
                     <TextInput
                         placeholder={`${title.slice(0, -1)} ${index + 1}`}
                         value={item.value}
@@ -28,8 +32,11 @@ const ListInput: React.FC<ListInputProps> = ({ title, items, onChange, onAdd, on
                     </Button>
                 </Group>
             ))}
+
+            {/* TODO: same string cut-off bug here! */}
             <Button variant="light" onClick={onAdd}>
-                + Add {title.slice(0, -1)}
+                + Add New
+                {/* + Add {title.slice(0, -1)} */}
             </Button>
         </Stack>
     );
