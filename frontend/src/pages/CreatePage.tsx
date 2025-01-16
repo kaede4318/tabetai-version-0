@@ -13,6 +13,7 @@ import {
     TextInput,
     Title,
 } from "@mantine/core";
+import { notifications, showNotification } from '@mantine/notifications';
 import ListInput from "../components/ListInput";
 
 const emptyRecipe = {
@@ -47,77 +48,67 @@ const CreatePage: React.FC = () => {
         };
 
         const { success, message } = await createRecipe(newRecipeData);
-        console.log(success)
-        console.log(message)
+
         // IGNORE FOR NOW: Add status toast here
         if (success) {
-        setNewRecipe(emptyRecipe);
-        setNewRecipeDetail(emptyRecipeDetail);
+            notifications.show({
+                title: "Recipe Created",
+                message: message || "Your recipe was successfully created!",
+                color: "green",
+                // icon: <Check size={16} />,
+            });
+            setNewRecipe(emptyRecipe);
+            setNewRecipeDetail(emptyRecipeDetail);
         } else {
-        console.error(message);
+            notifications.show({
+                title: "Error",
+                message: message || "There was an error creating your recipe.",
+                color: "red",
+                // icon: <X size={16} />,
+            });
+            console.error(message);
         }
     };
 
-    // const handleIngredientChange = (index: number, value: string) => {
-    //     const updatedIngredients = [...newRecipeDetail.ingredients];
-    //     updatedIngredients[index] = { ingredient: value };
-    //     setNewRecipeDetail({ ...newRecipeDetail, ingredients: updatedIngredients });
-    // };
-
-    // const addNewIngredient = () => {
-    //     setNewRecipeDetail({
-    //     ...newRecipeDetail,
-    //     ingredients: [...newRecipeDetail.ingredients, { ingredient: "" }],
-    //     });
-    // };
-
-    // const handleInstructionChange = (index: number, value: string) => {
-    //     const updatedInstructions = [...newRecipeDetail.instructions];
-    //     updatedInstructions[index] = { instruction: value };
-    //     setNewRecipeDetail({ ...newRecipeDetail, instructions: updatedInstructions });
-    // };
-
-    // const addNewInstruction = () => {
-    //     setNewRecipeDetail({
-    //     ...newRecipeDetail,
-    //     instructions: [...newRecipeDetail.instructions, { instruction: "" }],
-    //     });
-    // };
-
-    // const handleNoteChange = (index: number, value: string) => {
-    //     const updatedNotes = [...newRecipeDetail.notes];
-    //     updatedNotes[index] = { note: value };
-    //     setNewRecipeDetail({ ...newRecipeDetail, notes: updatedNotes });
-    // };
-
-    // const addNewNote = () => {
-    //     setNewRecipeDetail({
-    //     ...newRecipeDetail,
-    //     notes: [...newRecipeDetail.notes, { note: "" }],
-    //     });
-    // };
-    const updateList = (field: string, innerField: string, index: number, value: string) => {
+    /**
+     * Updates a specific property of an item in a list within the `newRecipeDetail` state.
+     *
+     * @param {string} field - The name of the field in `newRecipeDetail` to update (e.g., "ingredients", "instructions").
+     * @param {string} property - The property of the list item to update (e.g., "ingredient", "instruction").
+     * @param {number} index - The index of the item in the list to update.
+     * @param {string} value - The new value to set for the specified property.
+     */
+    const updateList = (field: string, property: string, index: number, value: string) => {
         const updatedList = [...newRecipeDetail[field]];
-        updatedList[index] = { [innerField]: value };
-        console.log("updatedList[index] ")
-        console.log(updatedList[index])
+        updatedList[index] = { [property]: value };
         setNewRecipeDetail({ ...newRecipeDetail, [field]: updatedList });
-        console.log(newRecipeDetail)
-      };
+    };
     
-      const addToList = (field: string, innerField: string) => {
-        console.log("Field: "+field)
+    /**
+     * Adds a new item to a list within the `newRecipeDetail` state with an empty property value.
+     *
+     * @param {string} field - The name of the field in `newRecipeDetail` to update (e.g., "ingredients", "instructions").
+     * @param {string} property - The property of the new list item to initialize with an empty string.
+     */
+    const addToList = (field: string, property: string) => {
         setNewRecipeDetail({
           ...newRecipeDetail,
-          [field]: [...newRecipeDetail[field], { [innerField]: "" }],
+          [field]: [...newRecipeDetail[field], { [property]: "" }],
         });
         
-      };
-    
-      const removeFromList = (field: string, innerField: string, index: number) => {
+    };
+
+    /**
+     * Removes an item from a list within the `newRecipeDetail` state at a specified index.
+     *
+     * @param {string} field - The name of the field in `newRecipeDetail` to update (e.g., "ingredients", "instructions").
+     * @param {string} property - The property of the list item (not directly used but included for symmetry with other functions).
+     * @param {number} index - The index of the item in the list to remove.
+     */
+    const removeFromList = (field: string, property: string, index: number) => {
         const updatedList = newRecipeDetail[field].filter((_: any, i: number) => i !== index);
         setNewRecipeDetail({ ...newRecipeDetail, [field]: updatedList });
-      };
+    };
 
     return (
         <Box>

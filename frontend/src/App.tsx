@@ -7,7 +7,6 @@ import HomePage from './pages/HomePage';
 import CreatePage from './pages/CreatePage';
 import RecipePage from './pages/RecipePage';
 
-import '@mantine/core/styles.css';
 import AppShellLayout from './components/AppShellLayout';
 
 function App() {
