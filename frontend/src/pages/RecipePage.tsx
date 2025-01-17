@@ -2,22 +2,10 @@ import { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 
 import { useRecipeStore } from "../store/apiStore";
-// import type { Recipe, RecipeStore } from "../store/recipe"; // how tf do you combine types
 
-import { Image, Badge, Group, Space, Checkbox, Stack, List, Anchor, Title, Box } from "@mantine/core";
+import { Image, Badge, Group, Checkbox, Stack, List, Anchor, Title, Box, AppShell, Card, Text, Grid } from "@mantine/core";
 import { FiExternalLink } from 'react-icons/fi';
 
-// TODO: Remove this. It's unnecessarily complicated
-// forms the ingredient string for ingredients section
-const getIngredientString = (ingredient: any): string => {
-    if (!ingredient.ingredient.amount || !ingredient.ingredient.amount.qty) {
-        return `${ingredient.ingredient.name}`;
-    } else if (!ingredient.ingredient.amount.unit) {
-        return `${ingredient.ingredient.amount.qty} ${ingredient.ingredient.name}`;
-    } else {
-        return `${ingredient.ingredient.amount.qty} ${ingredient.ingredient.amount.unit} ${ingredient.ingredient.name}`;
-    }
-};
 
 const RecipePage = () => {
     const { id } = useParams<{ id: string }>(); 
@@ -72,46 +60,16 @@ const RecipePage = () => {
 
     return (
         <Box>
-            <Title>{basicInfo.name}</Title>
-            <Group
-                gap="xl"
-            >
-                <h3>By {basicInfo.author}</h3>
-                <Anchor href={detailInfo.link} target="_blank">
-                    <span style={{ display: 'inline-flex', alignItems: 'center' }}>
-                                Recipe Source
-                                <FiExternalLink style={{ marginLeft: '4px' }} />
-                    </span>
-                </Anchor>
-            </Group>
-            <p>Serves {detailInfo.servings}, Ready in {detailInfo.cookingTime.total} minutes</p>
-            <Group>
-                {basicInfo.tags.map((tag: any) => (
-                    <Badge>{tag.tag}</Badge>
-                ))}
-            </Group>
-            <Space h="md" />
-            <Image 
-                radius="md"
-                h={450}
-                w="auto"
-                fit="contain"
-                src={basicInfo.image}
-                fallbackSrc={"https://placehold.co/600x400?text=Image+not+found+:("}
-            />
-            <Space h="md" />
-
-            <h2>Ingredients</h2>
+            <Title mb="md" order={2}>Ingredients</Title>
             <Stack>
                 {detailInfo.ingredients.map((ing: any) => (
                     <Checkbox
-                        label={getIngredientString(ing)}
+                        label={ing.ingredient}
                     />
                 ))}
             </Stack>
-            <Space h="md" />
 
-            <h2>Method</h2>
+            <Title mt="xl" mb="md" order={2}>Method</Title>
             <List>
                 {detailInfo.instructions.map((ins: any) => (
                     <div>
@@ -124,13 +82,99 @@ const RecipePage = () => {
                 ))}
             </List>
 
-            <h2>Notes</h2>
-            <List>
-                {detailInfo.notes.map((note: any) => (
-                    <List.Item>{note.note}</List.Item>
-                ))}
-            </List>
+            { detailInfo.notes.length > 0 && (
+                <>
+                    <Title mt="xl" mb="md" order={2}>Notes</Title>
+                    <List>
+                        {detailInfo.notes.map((note: any) => (
+                            <List.Item>{note.note}</List.Item>
+                        ))}
+                    </List>
+                </>
+            )}
 
+            { detailInfo.equipment.length > 0 && (
+                <>
+                    <Title mt="xl" mb="md" order={2}>Equipment</Title>
+                    <List>
+                        {detailInfo.equipment.map((e: any) => (
+                            <List.Item>{e.name}</List.Item>
+                        ))}
+                    </List>
+                </>
+            )}
+            
+            {/* bar that appears on the right of the main content */}
+            {/* disable this if the browser is on mobile */}
+            <AppShell.Aside p={35} w={500}>
+                <Title>{basicInfo.name}</Title>
+                <Group
+                    gap="xl"
+                    mb={30}
+                >
+                    { basicInfo.author !== "" && (
+                        <Title order={4}>By {basicInfo.author}</Title>
+                    )}
+                    { detailInfo.link !== "" && (
+                        <Anchor href={detailInfo.link} target="_blank">
+                            <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+                                        Recipe Source
+                                        <FiExternalLink style={{ marginLeft: '4px' }} />
+                            </span>
+                        </Anchor>
+                    )}
+                </Group>
+                <Image 
+                    radius="md"
+                    h={350}
+                    w="auto"
+                    fit="contain"
+                    src={basicInfo.image}
+                    fallbackSrc={"https://placehold.co/600x400?text=Image+not+found+:("}
+                />
+                {/* <p>Serves {detailInfo.servings}, Ready in {detailInfo.cookingTime.total} minutes</p> */}
+                <Group>
+                    {basicInfo.tags.map((tag: any) => (
+                        <Badge>{tag.tag}</Badge>
+                    ))}
+                </Group>
+
+                <Card
+                    shadow="sm"
+                    padding="lg"
+                    style={{
+                        backgroundColor: "#f8f9fa", // Light gray background
+                        borderRadius: "8px",
+                    }}
+                >
+                    <Title order={3} mb="sm">
+                        Recipe Details
+                    </Title>
+                    <Text size="md" style={{ marginBottom: "16px" }}>
+                        {detailInfo.servings !== null ? `Serves ${detailInfo.servings}` : "Unknown servings"}
+                    </Text>
+                    <Grid justify="center" align="center">
+                        <Grid.Col span={4}>
+                            <Text fw={700} align="left">
+                                Total Time
+                            </Text>
+                            {detailInfo.cookingTime.total !== null ? `${detailInfo.cookingTime.total} mins` : "? mins"}
+                        </Grid.Col>
+                        <Grid.Col span={4}>
+                            <Text fw={700} align="left">
+                                Prep Time
+                            </Text>
+                            {detailInfo.cookingTime.prep !== null ? `${detailInfo.cookingTime.prep} mins` : "? mins"}
+                        </Grid.Col>
+                        <Grid.Col span={4}>
+                            <Text fw={700} align="left">
+                                Cook Time
+                            </Text>
+                            {detailInfo.cookingTime.cook !== null ? `${detailInfo.cookingTime.cook} mins` : "? mins"}
+                        </Grid.Col>
+                    </Grid>
+                </Card>
+            </AppShell.Aside>
         </Box>
     );
 }
