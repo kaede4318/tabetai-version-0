@@ -3,7 +3,7 @@ import { Stack, TextInput, Button, Group, Title } from "@mantine/core";
 
 interface ListInputProps {
     title: string;
-    items: { value: string }[];
+    items: string[];
     onChange: (index: number, value: string) => void;
     onAdd: () => void;
     onDelete: (index: number) => void;
@@ -23,7 +23,7 @@ const ListInput: React.FC<ListInputProps> = ({ title, items, onChange, onAdd, on
                     is cut off at the end to remove the 's' for the other fields, like ingredient(s) */}
                     <TextInput
                         placeholder={`${title.slice(0, -1)} ${index + 1}`}
-                        value={item.value}
+                        value={Object.values(item)[0]}
                         onChange={(e) => onChange(index, e.currentTarget.value)}
                         style={{ flex: 1 }}
                     />
