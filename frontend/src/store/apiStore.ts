@@ -34,7 +34,6 @@ export const useRecipeStore = create<RecipeStore>((set) => ({
 	setRecipes: (recipes) => set({ recipes }),
 
 	createRecipe: async (newRecipe): Promise<ApiResponse> => {
-        console.log(newRecipe)
 		try {
 			const res = await fetch("/api/recipes", {
 				method: "POST",
