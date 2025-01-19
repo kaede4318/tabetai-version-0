@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { useRecipeStore } from "../store/apiStore";
 
-import { Image, Badge, Group, Checkbox, Stack, List, Anchor, Title, Box, AppShell, Card, Text, Grid, ScrollArea } from "@mantine/core";
+import { Image, Badge, Group, Checkbox, Stack, List, Anchor, Title, Box, AppShell, Card, Text, Grid, ScrollArea, Button, Flex } from "@mantine/core";
 import { FiExternalLink } from 'react-icons/fi';
 import { useMediaQuery } from '@mantine/hooks';
 
@@ -18,6 +18,12 @@ const RecipePage = () => {
     const [error, setError] = useState<string | null>(null);
 
     const isMobile = useMediaQuery('(min-width: 74em)'); // detects if mobile content
+
+    const navigate = useNavigate();
+
+    const handleNavigateToUpdatePage = () => {
+        navigate(`/update/${id}`);
+    };
   
     useEffect(() => {
         // Ensure ID exists
@@ -65,9 +71,17 @@ const RecipePage = () => {
         <>
         { !isMobile && (
             <Box>
-                <Anchor href={`/update/${id}`} target="_blank">
-                    Anchor component
-                </Anchor>
+                <Flex
+                    justify="flex-end" 
+                    align="flex-start"
+                >
+                    <Button 
+                        onClick={handleNavigateToUpdatePage}
+                    >
+                        Edit Recipe
+                    </Button>
+                </Flex>
+                
                 <Title order={2}>{basicInfo.name}</Title>
                 <Group
                     gap="xl"
@@ -269,10 +283,17 @@ const RecipePage = () => {
             {/* disable this if the browser is on mobile */}
 
             <AppShell.Aside p={35} w={500}>
-            {/* <ScrollArea h="100vh" type="never" scrollbars="y" scrollHideDelay={0}> */}
-                <Anchor href={`/update/${id}`} target="_blank">
-                    Anchor component
-                </Anchor>
+                <Flex
+                    justify="flex-end" 
+                    align="flex-start"
+                >
+                    <Button 
+                        onClick={handleNavigateToUpdatePage}
+                    >
+                        Edit Recipe
+                    </Button>
+                </Flex>
+
                 <Title order={2}>{basicInfo.name}</Title>
                 <Group
                     gap="xl"
@@ -303,7 +324,6 @@ const RecipePage = () => {
                         <Badge color="#10bcfc">{tag.tag}</Badge>
                     ))}
                 </Group>
-                {/* </ScrollArea> */}
             </AppShell.Aside>
             
         </Box>)}
