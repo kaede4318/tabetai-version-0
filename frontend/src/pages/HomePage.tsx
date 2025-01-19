@@ -1,10 +1,9 @@
-import { Anchor, Box, Container, SimpleGrid, Stack, Title } from "@mantine/core";
+import { Anchor, Box, Container, SimpleGrid, Stack, Title, Text, Flex } from "@mantine/core";
 import RecipeCard from "../components/RecipeCard";
 import { useRecipeStore } from "../store/apiStore";
 import { useEffect, useState } from "react";
 
 const HomePage = () => {
-    // const [recipe, setRecipe] = useState<Recipe | null>(null); // change type? (don't use any?)
     const { fetchRecipes, recipes } = useRecipeStore();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -30,10 +29,6 @@ const HomePage = () => {
   
     if (error) {
       return <div>Error: {error}</div>;
-    }
-  
-    if (!recipes) {
-      return <div>No recipes found.</div>;
     }
     
     return (
@@ -62,6 +57,20 @@ const HomePage = () => {
                         </div>
                     ))}
                 </SimpleGrid>
+
+                {recipes.length === 0 && (
+                    <Flex
+                        justify="center"
+                        gap="md"
+                    >
+                        <Text>
+                            No recipes found 😔
+                        </Text>
+                        <Anchor href={"/create"}>
+                            Click here to create your new recipe!
+                        </Anchor>
+                    </Flex>
+                )}
             </Stack>
         </Box>
     );
