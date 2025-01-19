@@ -17,7 +17,7 @@ const RecipePage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // const isMobile = useMediaQuery('(theme.breakpoints: "sm")'); // detects if mobile content
+    const isMobile = useMediaQuery('(min-width: 74em)'); // detects if mobile content
   
     useEffect(() => {
         // Ensure ID exists
@@ -62,6 +62,126 @@ const RecipePage = () => {
     const detailInfo = recipe.recipeDetail;
 
     return (
+        <>
+        { !isMobile && (
+            <Box>
+                <Anchor href={`/update/${id}`} target="_blank">
+                    Anchor component
+                </Anchor>
+                <Title order={2}>{basicInfo.name}</Title>
+                <Group
+                    gap="xl"
+                    mb={30}
+                >
+                    { basicInfo.author !== "" && (
+                        <Title order={4}>By {basicInfo.author}</Title>
+                    )}
+                    { detailInfo.link !== "" && (
+                        <Anchor href={detailInfo.link} target="_blank">
+                            <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+                                Recipe Source
+                                <FiExternalLink style={{ marginLeft: '4px' }} />
+                            </span>
+                        </Anchor>
+                    )}
+                </Group>
+                <Image 
+                    radius="md"
+                    h="auto"
+                    w="100%"
+                    fit="contain"
+                    src={basicInfo.image}
+                    fallbackSrc={"https://placehold.co/600x400?text=Image+not+found+:("}
+                />
+                <Group gap="xs" mt="xs">
+                    {basicInfo.tags.map((tag: any) => (
+                        <Badge color="#10bcfc">{tag.tag}</Badge>
+                    ))}
+                </Group>
+                <Box>
+                    <Card
+                        shadow="sm"
+                        padding="lg"
+                        style={{
+                            backgroundColor: "#f8f9fa", // Light gray background
+                            borderRadius: "8px",
+                        }}
+                    >
+                        <Title order={3} mb="sm">
+                            Recipe Details
+                        </Title>
+                        <Text size="md" style={{ marginBottom: "16px" }}>
+                            {detailInfo.servings !== null ? `Serves ${detailInfo.servings}` : "Unknown servings"}
+                        </Text>
+                        <Grid justify="center" align="center">
+                            <Grid.Col span={4}>
+                                <Text fw={700} align="left">
+                                    Total Time
+                                </Text>
+                                {detailInfo.cookingTime.total !== null ? `${detailInfo.cookingTime.total} mins` : "? mins"}
+                            </Grid.Col>
+                            <Grid.Col span={4}>
+                                <Text fw={700} align="left">
+                                    Prep Time
+                                </Text>
+                                {detailInfo.cookingTime.prep !== null ? `${detailInfo.cookingTime.prep} mins` : "? mins"}
+                            </Grid.Col>
+                            <Grid.Col span={4}>
+                                <Text fw={700} align="left">
+                                    Cook Time
+                                </Text>
+                                {detailInfo.cookingTime.cook !== null ? `${detailInfo.cookingTime.cook} mins` : "? mins"}
+                            </Grid.Col>
+                        </Grid>
+                    </Card>
+
+                    <Title mt="xl" mb="md" order={2}>Ingredients</Title>
+                    <Stack>
+                        {detailInfo.ingredients.map((ing: any) => (
+                            <Checkbox
+                                label={ing.ingredient}
+                            />
+                        ))}
+                    </Stack>
+
+                    <Title mt="xl" mb="md" order={2}>Method</Title>
+                    <List>
+                        {detailInfo.instructions.map((ins: any) => (
+                            <div>
+                                <List.Item>{ins.instruction}</List.Item>
+                                {/* recipe sometimes has multiple pictures per step (see recipeDetail.model.js as well) */}
+                                {ins.pictureLink && (
+                                    <Image src={ins.pictureLink} alt="Instruction" />
+                                )}
+                            </div>
+                        ))}
+                    </List>
+
+                    { detailInfo.notes.length > 0 && (
+                        <>
+                            <Title mt="xl" mb="md" order={2}>Notes</Title>
+                            <List>
+                                {detailInfo.notes.map((note: any) => (
+                                    <List.Item>{note.note}</List.Item>
+                                ))}
+                            </List>
+                        </>
+                    )}
+
+                    { detailInfo.equipment.length > 0 && (
+                        <>
+                            <Title mt="xl" mb="md" order={2}>Equipment</Title>
+                            <List>
+                                {detailInfo.equipment.map((e: any) => (
+                                    <List.Item>{e.name}</List.Item>
+                                ))}
+                            </List>
+                        </>
+                    )}
+                </Box>          
+            </Box>
+        )}
+        { isMobile && (
         <Box>
             <Box mr={450}>
                 <Card
@@ -172,8 +292,8 @@ const RecipePage = () => {
                 </Group>
                 <Image 
                     radius="md"
-                    h={350}
-                    w="auto"
+                    h="auto"
+                    w="100%"
                     fit="contain"
                     src={basicInfo.image}
                     fallbackSrc={"https://placehold.co/600x400?text=Image+not+found+:("}
@@ -185,7 +305,9 @@ const RecipePage = () => {
                 </Group>
                 {/* </ScrollArea> */}
             </AppShell.Aside>
-        </Box>
+            
+        </Box>)}
+        </>
     );
 }
 
