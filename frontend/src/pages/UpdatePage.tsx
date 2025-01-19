@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useRecipeStore } from "../store/apiStore";
 import {
     Box,
     Button,
     Fieldset,
     Group,
+    Modal,
     MultiSelect,
     NumberInput,
     TextInput,
@@ -37,12 +38,17 @@ const emptyRecipeDetail = {
 
 const UpdatePage: React.FC = () => {
     const { id } = useParams<{ id: string }>(); // Get the recipe ID from the URL
+
     const [recipe, setRecipe] = useState<any>(emptyRecipe);
     const [recipeDetail, setRecipeDetail] = useState<any>(emptyRecipeDetail);
     const [originalRecipe, setOriginalRecipe] = useState<any>(emptyRecipe);
     const [originalRecipeDetail, setOriginalRecipeDetail] = useState<any>(emptyRecipeDetail);
 
-    const { fetchRecipe, updateRecipe } = useRecipeStore();
+    const [modalOpened, setModalOpened] = useState(false);
+
+    const { fetchRecipe, updateRecipe, deleteRecipe } = useRecipeStore();
+
+    const navigate = useNavigate(); // React Router's navigation hook
 
     const recipeTags: String[] = [
         "Breakfast",
@@ -161,6 +167,31 @@ const UpdatePage: React.FC = () => {
             });
         }
     };
+
+    const handleDeleteRecipe = async () => {
+        const { success, message } = await deleteRecipe(id);
+
+        if (success) {
+            notifications.show({
+                title: "Recipe Deleted",
+                message: message || "Your recipe was successfully deleted!",
+                color: "green",
+                position: 'bottom-center',
+                icon: <FaCheck />
+            });
+            navigate("/");
+        } else {
+            notifications.show({
+                title: "Error",
+                message: message || "There was an error deleting your recipe.",
+                color: "red",
+                position: 'bottom-center',
+                icon: <FaXmark />
+            });
+        }
+
+        setModalOpened(false); // Close modal after handling
+    }
 
     const updateList = (field: string, property: string, index: number, value: string) => {
         const updatedList = [...recipeDetail[field]];
@@ -311,10 +342,33 @@ const UpdatePage: React.FC = () => {
                     onDelete={(index) => removeFromList("notes", "note", index)}
                 />
             </Fieldset>
+            
+            <Group mt="xl">
+                <Button onClick={handleUpdateRecipe}>
+                    Update Recipe
+                </Button>
+                <Button variant="filled" color="red" onClick={() => setModalOpened(true)}>
+                    Delete Recipe
+                </Button>
+            </Group>
 
-            <Button mt="md" onClick={handleUpdateRecipe}>
-                Update Recipe
-            </Button>
+            <Modal
+                opened={modalOpened}
+                onClose={() => setModalOpened(false)}
+                title="Confirm Delete"
+                centered
+            >
+                <p>Are you sure you want to delete this recipe? This action is irreversible!</p>
+                <div style={{ display: "flex", justifyContent: "flex-end", gap: "8px" }}>
+                    <Button variant="outline" onClick={() => setModalOpened(false)}>
+                        Cancel
+                    </Button>
+                    <Button color="red" onClick={handleDeleteRecipe}>
+                        Confirm
+                    </Button>
+                </div>
+            </Modal>
+
         </Box>
     );
 };
