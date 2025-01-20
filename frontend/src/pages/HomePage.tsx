@@ -1,4 +1,4 @@
-import { Anchor, Box, Container, SimpleGrid, Stack, Title, Text, Flex } from "@mantine/core";
+import { Anchor, Box, SimpleGrid, Stack, Title, Text, Flex } from "@mantine/core";
 import RecipeCard from "../components/RecipeCard";
 import { useRecipeStore } from "../store/apiStore";
 import { useEffect, useState } from "react";

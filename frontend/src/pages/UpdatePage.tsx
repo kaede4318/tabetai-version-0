@@ -50,7 +50,7 @@ const UpdatePage: React.FC = () => {
 
     const navigate = useNavigate(); // React Router's navigation hook
 
-    const recipeTags: String[] = [
+    const recipeTags = [
         "Breakfast",
         "Lunch",
         "Dinner",
@@ -99,13 +99,16 @@ const UpdatePage: React.FC = () => {
         "Spicy",
         "Sweet",
         "Savory"
-    ];
+    ].map((tag) => ({ value: tag, label: tag })); // convert tags to correct Type (ComboboxItem)
 
     useEffect(() => {
         const fetchRecipeData = async () => {
+            // Ensure ID exists
+            if (!id) {
+                throw new Error("ID doesn't exist!");
+            }
+
             const recipeData = await fetchRecipe(id);
-            console.log("recipeData")
-            console.log(recipeData)
             if (recipeData) {
                 setRecipe(recipeData.recipe);
                 setRecipeDetail(recipeData.recipeDetail);
@@ -147,6 +150,11 @@ const UpdatePage: React.FC = () => {
             payload.detailedRecipeData = updatedRecipeDetailData;
         }
 
+        // Ensure ID exists
+        if (!id) {
+            throw new Error("ID doesn't exist!");
+        }
+
         const { success, message } = await updateRecipe(id, payload);
 
         if (success) {
@@ -169,6 +177,11 @@ const UpdatePage: React.FC = () => {
     };
 
     const handleDeleteRecipe = async () => {
+        // Ensure ID exists
+        if (!id) {
+            throw new Error("ID doesn't exist!");
+        }
+
         const { success, message } = await deleteRecipe(id);
 
         if (success) {
@@ -206,7 +219,7 @@ const UpdatePage: React.FC = () => {
         });
     };
 
-    const removeFromList = (field: string, property: string, index: number) => {
+    const removeFromList = (field: string, index: number) => {
         const updatedList = recipeDetail[field].filter((_: any, i: number) => i !== index);
         setRecipeDetail({ ...recipeDetail, [field]: updatedList });
     };
@@ -318,28 +331,28 @@ const UpdatePage: React.FC = () => {
                     items={detailInfo.ingredients}
                     onChange={(index, value) => updateList("ingredients", "ingredient", index, value)}
                     onAdd={() => addToList("ingredients", "ingredient")}
-                    onDelete={(index) => removeFromList("ingredients", "ingredient", index)}
+                    onDelete={(index) => removeFromList("ingredients", index)}
                 />
                 <ListInput
                     title="Instructions"
                     items={detailInfo.instructions}
                     onChange={(index, value) => updateList("instructions", "instruction", index, value)}
                     onAdd={() => addToList("instructions", "instruction")}
-                    onDelete={(index) => removeFromList("instructions", "instruction", index)}
+                    onDelete={(index) => removeFromList("instructions", index)}
                 />
                 <ListInput
                     title="Equipment"
                     items={detailInfo.equipment}
                     onChange={(index, value) => updateList("equipment", "name", index, value)}
                     onAdd={() => addToList("equipment", "name")}
-                    onDelete={(index) => removeFromList("equipment", "name", index)}
+                    onDelete={(index) => removeFromList("equipment", index)}
                 />
                 <ListInput
                     title="Notes"
                     items={detailInfo.notes}
                     onChange={(index, value) => updateList("notes", "note", index, value)}
                     onAdd={() => addToList("notes", "note")}
-                    onDelete={(index) => removeFromList("notes", "note", index)}
+                    onDelete={(index) => removeFromList("notes", index)}
                 />
             </Fieldset>
             

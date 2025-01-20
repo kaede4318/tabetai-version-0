@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { useRecipeStore } from "../store/apiStore";
 
-import { Image, Badge, Group, Checkbox, Stack, List, Anchor, Title, Box, AppShell, Card, Text, Grid, ScrollArea, Button, Flex } from "@mantine/core";
+import { Image, Badge, Group, Checkbox, Stack, List, Anchor, Title, Box, AppShell, Card, Text, Grid, Button, Flex } from "@mantine/core";
 import { FiExternalLink } from 'react-icons/fi';
 import { useMediaQuery } from '@mantine/hooks';
 
@@ -94,7 +94,7 @@ const RecipePage = () => {
                         <Anchor href={detailInfo.link} target="_blank">
                             <span style={{ display: 'inline-flex', alignItems: 'center' }}>
                                 Recipe Source
-                                <FiExternalLink style={{ marginLeft: '4px' }} />
+                                <FiExternalLink />
                             </span>
                         </Anchor>
                     )}
@@ -129,19 +129,19 @@ const RecipePage = () => {
                         </Text>
                         <Grid justify="center" align="center">
                             <Grid.Col span={4}>
-                                <Text fw={700} align="left">
+                                <Text fw={700}>
                                     Total Time
                                 </Text>
                                 {detailInfo.cookingTime.total !== null ? `${detailInfo.cookingTime.total} mins` : "? mins"}
                             </Grid.Col>
                             <Grid.Col span={4}>
-                                <Text fw={700} align="left">
+                                <Text fw={700}>
                                     Prep Time
                                 </Text>
                                 {detailInfo.cookingTime.prep !== null ? `${detailInfo.cookingTime.prep} mins` : "? mins"}
                             </Grid.Col>
                             <Grid.Col span={4}>
-                                <Text fw={700} align="left">
+                                <Text fw={700}>
                                     Cook Time
                                 </Text>
                                 {detailInfo.cookingTime.cook !== null ? `${detailInfo.cookingTime.cook} mins` : "? mins"}
@@ -214,19 +214,19 @@ const RecipePage = () => {
                     </Text>
                     <Grid justify="center" align="center">
                         <Grid.Col span={4}>
-                            <Text fw={700} align="left">
+                            <Text fw={700}>
                                 Total Time
                             </Text>
                             {detailInfo.cookingTime.total !== null ? `${detailInfo.cookingTime.total} mins` : "? mins"}
                         </Grid.Col>
                         <Grid.Col span={4}>
-                            <Text fw={700} align="left">
+                            <Text fw={700}>
                                 Prep Time
                             </Text>
                             {detailInfo.cookingTime.prep !== null ? `${detailInfo.cookingTime.prep} mins` : "? mins"}
                         </Grid.Col>
                         <Grid.Col span={4}>
-                            <Text fw={700} align="left">
+                            <Text fw={700}>
                                 Cook Time
                             </Text>
                             {detailInfo.cookingTime.cook !== null ? `${detailInfo.cookingTime.cook} mins` : "? mins"}
@@ -306,7 +306,7 @@ const RecipePage = () => {
                         <Anchor href={detailInfo.link} target="_blank">
                             <span style={{ display: 'inline-flex', alignItems: 'center' }}>
                                 Recipe Source
-                                <FiExternalLink style={{ marginLeft: '4px' }} />
+                                <FiExternalLink />
                             </span>
                         </Anchor>
                     )}

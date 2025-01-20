@@ -40,7 +40,7 @@ const CreatePage: React.FC = () => {
 
     const { createRecipe } = useRecipeStore();
 
-    const recipeTags: String[] = [
+    const recipeTags = [
         "Breakfast",
         "Lunch",
         "Dinner",
@@ -89,7 +89,7 @@ const CreatePage: React.FC = () => {
         "Spicy",
         "Sweet",
         "Savory"
-      ];
+      ].map((tag) => ({ value: tag, label: tag })); // convert tags to correct Type (ComboboxItem)
 
     const handleAddRecipe = async () => {
         const newRecipeData = {
@@ -158,7 +158,7 @@ const CreatePage: React.FC = () => {
      * @param {string} property - The property of the list item (not directly used but included for symmetry with other functions).
      * @param {number} index - The index of the item in the list to remove.
      */
-    const removeFromList = (field: string, property: string, index: number) => {
+    const removeFromList = (field: string, index: number) => {
         const updatedList = newRecipeDetail[field].filter((_: any, i: number) => i !== index);
         setNewRecipeDetail({ ...newRecipeDetail, [field]: updatedList });
     };
@@ -281,28 +281,28 @@ const CreatePage: React.FC = () => {
                     items={newRecipeDetail.ingredients}
                     onChange={(index, value) => updateList("ingredients", "ingredient", index, value)}
                     onAdd={() => addToList("ingredients", "ingredient")}
-                    onDelete={(index) => removeFromList("ingredients", "ingredient", index)}
+                    onDelete={(index) => removeFromList("ingredients", index)}
                 />
                 <ListInput
                     title="Instructions"
                     items={newRecipeDetail.instructions}
                     onChange={(index, value) => updateList("instructions", "instruction", index, value)}
                     onAdd={() => addToList("instructions", "instruction")}
-                    onDelete={(index) => removeFromList("instructions", "instruction", index)}
+                    onDelete={(index) => removeFromList("instructions", index)}
                 />
                 <ListInput
                     title="Equipment"
                     items={newRecipeDetail.equipment}
                     onChange={(index, value) => updateList("equipment", "name", index, value)}
                     onAdd={() => addToList("equipment", "name")}
-                    onDelete={(index) => removeFromList("equipment", "name", index)}
+                    onDelete={(index) => removeFromList("equipment", index)}
                 />
                 <ListInput
                     title="Notes"
                     items={newRecipeDetail.notes}
                     onChange={(index, value) => updateList("notes", "note", index, value)}
                     onAdd={() => addToList("notes", "note")}
-                    onDelete={(index) => removeFromList("notes", "note", index)}
+                    onDelete={(index) => removeFromList("notes", index)}
                 />
             </Fieldset>
 

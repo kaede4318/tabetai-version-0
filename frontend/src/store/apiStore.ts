@@ -15,6 +15,39 @@ export interface Recipe {
 	image: string;
 	tags: string[];
 	detailId: Types.ObjectId;
+    createdAt?: Date;
+    updatedAt?: Date;
+}
+
+interface RecipeDetail {
+    _id: string;
+    servings?: number;
+    cookingTime?: {
+        total?: number;
+        prep?: number;
+        cook?: number;
+    };
+    ingredients: {
+        ingredient: string;
+    }[];
+    equipment: {
+        name?: string;
+    }[];
+    instructions: {
+        instruction: string;
+        pictureLink?: string;
+    }[];
+    notes: {
+        note?: string;
+    }[];
+    link?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+}
+
+interface RecipeResponse {
+    recipe: Recipe,
+    recipeDetail: RecipeDetail
 }
 
 export interface RecipeStore {
@@ -23,7 +56,7 @@ export interface RecipeStore {
 	// createRecipe: (newRecipe: Omit<Recipe, "_id" | "detailId">) => Promise<ApiResponse>; // do we need Omit type?
 	createRecipe: (newRecipe: any) => Promise<ApiResponse>;
 	fetchRecipes: () => Promise<ApiResponse>;
-	fetchRecipe: (rid: string) => Promise<Recipe | ApiResponse>;
+	fetchRecipe: (rid: string) => Promise<RecipeResponse>;
 	deleteRecipe: (rid: string) => Promise<ApiResponse>;
 	updateRecipe: (rid: string, updatedRecipe: Partial<Recipe>) => Promise<ApiResponse>;
 }
@@ -74,7 +107,7 @@ export const useRecipeStore = create<RecipeStore>((set) => ({
 		}
 	},
 
-	fetchRecipe: async (rid): Promise<any | ApiResponse> => {
+	fetchRecipe: async (rid): Promise<any> => {
 		try {
 			const res = await fetch(`/api/recipes/${rid}`);
 			const data = await res.json();
