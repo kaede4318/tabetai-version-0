@@ -4,6 +4,16 @@ Tabetai (食べたい) is a user-friendly recipe app that you can access anywher
 
 Cooking should be simple and enjoyable, free from the clutter of pop-ups and intrusive ads that dominate so many recipe websites today. With Tabetai, you can effortlessly create, view, edit, update, and share your recipes with others.
 
+### App Preview
+Main Page:
+<img width="1496" alt="image" src="https://github.com/user-attachments/assets/ef8c41c7-f911-4c56-8b93-5c0ee32e2d5d" />
+
+View Recipe Page:
+<img width="1482" alt="image" src="https://github.com/user-attachments/assets/21ec931d-3dfe-4bfa-9a01-3ed649de04da" />
+
+New Recipe Page:
+<img width="1482" alt="image" src="https://github.com/user-attachments/assets/28487366-8a24-4e1c-97b7-964a2efcfd9c" />
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. <!---See deployment for notes on how to deploy the project on a live system. -->
