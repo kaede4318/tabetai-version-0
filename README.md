@@ -1,4 +1,4 @@
-# tabetai
+# tabetai ver 0 (new version coming soon)
 
 Tabetai (食べたい) is a user-friendly recipe app that you can access anywhere with an internet connection—whether it's on your computer, iPad, Xbox (though we’re not sure why you’d want to cook with an Xbox), or any other device.
 
