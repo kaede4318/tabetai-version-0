@@ -27,6 +27,7 @@ What things you need to install the software and how to install them
 Give examples
 ```
 -->
+<!--
 ### Installing
 
 Make sure you have the latest version of node downloaded.
@@ -53,7 +54,7 @@ To contribute to or tweak with this project, run
 ```
 npm run dev
 ```
-
+-->
 <!--
 End with an example of getting some data out of the system or using it for a little demo
 
